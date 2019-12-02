@@ -3,3 +3,9 @@
   color: #fff;
   cursor: pointer;
 }
+
+@media (min-width: 500px) {
+  .Hamburger {
+    display: none;
+  }
+}
