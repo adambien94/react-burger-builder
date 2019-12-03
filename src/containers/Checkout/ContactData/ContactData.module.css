@@ -1,0 +1,13 @@
+.contactData {
+  text-align: center;
+  box-shadow: 4px 0 14px rgba(0, 0, 0, 0.2);
+  padding: 1px 0;
+}
+
+.contactData input {
+  display: block;
+  margin: 13px auto;
+  border: 1px solid lightgray;
+  padding: 3px;
+  outline: none;
+}
