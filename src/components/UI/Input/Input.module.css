@@ -23,3 +23,8 @@
   outline: none;
   background: #ccc;
 }
+
+.invalid {
+  background: lightpink;
+  border: 1px solid red;
+}
