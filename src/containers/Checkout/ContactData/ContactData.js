@@ -40,6 +40,7 @@ export default class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" }
           ]
         },
+        validation: {},
         valid: true
       },
       street: {
@@ -96,12 +97,10 @@ export default class ContactData extends Component {
     const updatedForm = { ...this.state.orderForm };
     const updatedElement = { ...updatedForm[elementId] };
     updatedElement.value = event.target.value;
-    if (updatedElement.validation) {
-      updatedElement.valid = this.checkValidity(
-        updatedElement.value,
-        updatedElement.validation
-      );
-    }
+    updatedElement.valid = this.checkValidity(
+      updatedElement.value,
+      updatedElement.validation
+    );
     updatedElement.touched = true;
     updatedForm[elementId] = updatedElement;
     updatedForm[elementId].value = updatedElement.value;

@@ -4,6 +4,8 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import { connect } from "react-redux";
+import * as actionTypes from "../../store/actions";
 
 const INGREDIENT_PRICING = {
   salad: 0.5,
@@ -130,9 +132,23 @@ class BurgerBuilder extends Component {
           price={this.state.totalPrice}
           ordered={this.updatePurchasingHandler}
         ></BuildControls>
+        <button onClick={this.props.onIncrementPrice}>aaa</button>
       </Aux>
     );
   }
 }
 
-export default BurgerBuilder;
+const mapStateToProps = state => {
+  return {
+    ingredients: state.ingredients,
+    price: state.price
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onIncrementPrice: () => dispatch({ type: actionTypes.INCREMENT_PRICE })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);

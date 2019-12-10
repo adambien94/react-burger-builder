@@ -23,7 +23,7 @@
   color: #944317;
 }
 
-.Disabled {
-  opacity: 0.43;
-  filter: grayscale(0.8);
+.Button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
 }
