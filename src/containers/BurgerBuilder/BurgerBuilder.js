@@ -6,24 +6,12 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions";
+import axios from "../../axios-orders";
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
-    purchasable: false,
     purchasing: false
   };
-
-  componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      this.updatePurchaseState(this.props.ingredients);
-    }
-  }
 
   updatePurchaseState = ingredients => {
     const sum = Object.keys(ingredients)
@@ -33,8 +21,7 @@ class BurgerBuilder extends Component {
       .reduce((sum, el) => {
         return sum + el;
       }, 0);
-
-    this.setState({ purchasable: sum > 0 });
+    return sum > 0;
   };
 
   updatePurchasingHandler = () => {
@@ -44,18 +31,35 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    const queryParams = [];
-    for (let i in this.state.ingredients) {
-      queryParams.push(
-        encodeURIComponent(i) +
-          "=" +
-          encodeURIComponent(this.state.ingredients[i])
-      );
-    }
-    const queryString = queryParams.join("&");
+    const order = {
+      ingredients: "pomidor",
+      customer: {
+        name: "Adam",
+        age: 99,
+        address: {
+          street: "rynek",
+          country: "poland"
+        }
+      }
+    };
+
+    axios
+      .post("/orders.json", order)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+
+    // const queryParams = [];
+    // for (let i in this.props.ingredients) {
+    //   queryParams.push(
+    //     encodeURIComponent(i) +
+    //       "=" +
+    //       encodeURIComponent(this.props.ingredients[i])
+    //   );
+    // }
+    // const queryString = queryParams.join("&");
     this.props.history.push({
-      pathname: "/checkout",
-      search: "?" + queryString
+      pathname: "/checkout"
+      // search: "?" + queryString
     });
   };
 
@@ -91,7 +95,7 @@ class BurgerBuilder extends Component {
         <BuildControls
           ingredientAdded={type => this.props.onAddIngredient(type)}
           ingredientRemoved={type => this.props.onRemoveIngredient(type)}
-          purchasable={this.state.purchasable}
+          purchasable={this.updatePurchaseState(this.props.ingredients)}
           disabled={disabledInfo}
           price={this.props.price}
           ordered={this.updatePurchasingHandler}
