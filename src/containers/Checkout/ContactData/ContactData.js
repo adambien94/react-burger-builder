@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import classes from "./ContactData.module.css";
 import Button from "../../../components/UI/Button/Button";
 import Input from "../../../components/UI/Input/Input";
+import { connect } from "react-redux";
+import axios from "../../../axios-orders";
+import * as orderActions from "../../../store/actions/index";
 
-export default class ContactData extends Component {
+class ContactData extends Component {
   state = {
     orderForm: {
       name: {
@@ -40,6 +43,7 @@ export default class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" }
           ]
         },
+        value: "fastest",
         validation: {},
         valid: true
       },
@@ -90,7 +94,11 @@ export default class ContactData extends Component {
 
   orderHandler = event => {
     event.preventDefault();
-    alert("🍔");
+    const formData = {};
+    for (let formElement in this.state.orderForm) {
+      formData[formElement] = this.state.orderForm[formElement].value;
+    }
+    this.props.onOrderBurger(formData);
   };
 
   inputChangeHandler = (event, elementId) => {
@@ -164,3 +172,19 @@ export default class ContactData extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    ingredients: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.price,
+    loading: state.order.loading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderBurger: orderData => dispatch(orderActions.purchaseBurger(orderData))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

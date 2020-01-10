@@ -33,12 +33,10 @@ export const initIngredients = () => {
     axios
       .get("/ingredients.json")
       .then(response => {
-        alert("hura");
-        console.log(response.data);
         dispatch(setIngredients(response.data));
       })
       .catch(error => {
-        console.log("errorrrrr");
+        console.log("initIngredients error");
         dispatch(fetchIngredientsFailed());
       });
   };
